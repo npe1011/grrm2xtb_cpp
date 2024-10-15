@@ -83,25 +83,37 @@ Comparison of several calculation timinges is summarized below.
 
 ### Ex1. Comparison of MIN Job
 MIN of organic molecule with 34 atoms with NoFC option (GFN2/gas).
+
 With 8 cores (OMP_NUM_THREADS=8 or orcaproc=8). 
+
 with grrm2xtb [test1_min_freq/test1_min.log]: 12.0 sec / 220 forces = 0.055 sec/force
+
 with ORCA5 [test1_min_freq/test1_min_orca.log]: 82.0 sec / 220 forces = 0.37 sec/force
 
 ### Ex2. Comparison of FREQ Job
 With 8 cores (OMP_NUM_THREADS=8 or orcaproc=8). For ORCA5, num freq=true. 
+
 with grrm2xtb [test1_min_freq/test1_freq.log]: 1.0 sec
+
 with ORCA5 [test1_min_freq/test1_freq_orca.log]: 38.0 sec
+
 
 ### Ex.3 Comparison of Parallelized Single-threaded MC-AFIR Job
 MC-AFIR seach for two small organic molecules (total 24 atoms) with NoFC Option (GFN2/gas).
+
 Run 20 process with 1 core/process in 1 hour (-p20 -s3600).
+
 with grrm2xtb [test4_mc/test4.log]: 1216 runs, 314632 forces, (0.011 sec/force).
+
 with ORCA5 [test4_mc/test4_orca.log]: 874 runs, 256333 forces, (0.014 sec/force).
 
 ### Ex4. Large Molecules
 MIN of organic molecule with 252 atoms with NoFC option (GFN2/gas).
+
 With 8 cores (OMP_NUM_THREADS=8 or orcaproc=8). 
+
 with grrm2xtb [test5_large/test5_min.log]: 2876.0 sec / 619 forces = 4.65 sec/force
+
 with ORCA5 [test5_large/test5_min_orca.log]: 3005.0 sec / 641 forces = 4.69 sec/force
 
 
