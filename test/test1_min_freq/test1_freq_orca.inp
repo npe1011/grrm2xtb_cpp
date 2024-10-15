@@ -1,0 +1,9 @@
+! XTB2 NoUseSym @job
+
+%freq
+  numfreq true
+end
+
+* xyz  0 1
+@geometry
+*
