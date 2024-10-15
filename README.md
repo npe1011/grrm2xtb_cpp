@@ -20,7 +20,7 @@ We tested this interface with GRRM23, xtb-6.6.1 and newers.
 ## Compilation
 
  - The released binary file has been statically built and may require no dependencies. 
- - If you want to build your self, modify makefile and do make.
+ - If you want to build by yourself, modify makefile and do make.
  - The current makefile is written to use intel compiler (icpx) for static build.
 
 
