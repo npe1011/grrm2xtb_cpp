@@ -271,7 +271,7 @@ void run_xtb(const GRRMInputData& input_data) {
     std::string solvation, solvent;
     if (const char* env_solvation = std::getenv(XTB_SOLVATION_ENV)) {
         solvation = to_lowercase(std::string(env_solvation));
-        if (solvation == "gbsa" || solvation == "alpb") {
+        if (solvation == "gbsa" || solvation == "alpb" || solvation == "gbe" || solvation == "cosmo") {
             solvation_flag = true;
         } else {
             throw_error("Solvation is invalid. Use gbsa or alpb.");
@@ -297,6 +297,18 @@ void run_xtb(const GRRMInputData& input_data) {
         if (strlen(xtb_param) > 0) {
             xtb_commands.push_back("--gfn");
             xtb_commands.push_back(xtb_param);
+        }
+    }
+
+    if (const char* xtb_param = std::getenv(XTB_PARAM_ENV)) {
+        if (strlen(xtb_param) > 0) {
+            // 大文字小文字を無視して比較 (0なら一致)
+            if (strcasecmp(xtb_param, "gxtb") == 0) {
+                xtb_commands.push_back("--gxtb");
+            } else {
+                xtb_commands.push_back("--gfn");
+                xtb_commands.push_back(xtb_param);
+            }
         }
     }
 
