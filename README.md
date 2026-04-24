@@ -52,7 +52,7 @@ export XTB_CHARGE=0
 export XTB_MULTI=1
 export XTB_SOLVATION=ALPB
 export XTB_SOLVENT=CH2Cl2
-export XTB_PARAM=2
+export XTB_PARAM=2  # 1/2/ff/gxtb
 export XTB_SCRATCH_DIR=/path/to/scratch/directory
 ```
 
