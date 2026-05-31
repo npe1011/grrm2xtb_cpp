@@ -246,24 +246,23 @@ void run_xtb(const GRRMInputData& input_data) {
     }
     
     // charge
-    std::string charge = "0";
     if (const char* xtb_charge = std::getenv(XTB_CHARGE_ENV)) {
-        if (strlen(xtb_charge) > 0) {
-            charge = std::string(xtb_charge);
+        std::string charge_str(xtb_charge);
+        if (!charge_str.empty() && to_lowercase(charge_str) != "none") {
+            xtb_commands.push_back("--chrg");
+            xtb_commands.push_back(charge_str);
         }
     }
-    xtb_commands.push_back("--chrg");
-    xtb_commands.push_back(charge);
     
     // mult, uhf
-    std::string spin = "0";
     if (const char* xtb_multi = std::getenv(XTB_MULTI_ENV)) {
-        if (strlen(xtb_multi) > 0) {
-            spin = std::to_string(std::stoi(xtb_multi) - 1);
+        std::string multi_str(xtb_multi);
+        if (!multi_str.empty() && to_lowercase(multi_str) != "none") {
+            std::string spin = std::to_string(std::stoi(multi_str) - 1);
+            xtb_commands.push_back("--uhf");
+            xtb_commands.push_back(spin);
         }
     }
-    xtb_commands.push_back("--uhf");
-    xtb_commands.push_back(spin);
     
     // solvation and solvent
     bool solvation_flag = false;
@@ -302,7 +301,6 @@ void run_xtb(const GRRMInputData& input_data) {
 
     if (const char* xtb_param = std::getenv(XTB_PARAM_ENV)) {
         if (strlen(xtb_param) > 0) {
-            // 大文字小文字を無視して比較 (0なら一致)
             if (strcasecmp(xtb_param, "gxtb") == 0) {
                 xtb_commands.push_back("--gxtb");
             } else {
@@ -314,6 +312,8 @@ void run_xtb(const GRRMInputData& input_data) {
 
     // task
     if (input_data.task == "egh") {
+        xtb_commands.push_back("--acc");
+        xtb_commands.push_back("0.1");
         xtb_commands.push_back("--hess");
         xtb_commands.push_back("--grad");
     } else if (input_data.task == "e" || input_data.task == "eg" || input_data.task == "mi") {
