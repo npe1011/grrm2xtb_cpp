@@ -9,7 +9,7 @@ Caution: input using of "External Atoms" has not been tested.
 
 
 ## Software version
-We tested this interface with GRRM23, xtb-6.6.1 and newers.
+We tested this interface with GRRM23, xtb-6.6.1 and newers. We also add gxtb support implemented in xtb 6.7.1 development version.
 
 
 ## Settings
@@ -43,18 +43,22 @@ sublink=grrm2xtb
 
 The calculation settings for XTB (charge, spin multiplicity, solvation, XTB version) need to be given as environmental variables (see below), NOT in the GRRM input.
 The charge and multiplicity in the GRRM input are neglected and have no effect.
-In case no environmental variables are set, the default settings are used (charge = 0, multiplicity = 1, gas phase, GFN2).
+In case no environmental variables are set, the default settings are used.
 `XTB_MULTI` should be a spin multiplicity like in Gaussian or GRRM, not Na-Nb (--uhf for XTB). Internally, `--uhf` is set to multiplicity-1. 
 XTB calculations are done in sub-directories in XTB_SCRATCH_DIR. If not provided, sub-directories are prepared in the GRRM working directory. 
 
+**Important change** (2026/05/31): When XTB_CHARGE and XTB_MULTI are not given, grrm2xtb explicitly adds `--chrg 0 --uhf 0` to xtb commandline arguments in the previous version,
+while no command line arguments are added in the newer version (call default conditions in xtb binary). I found that gxtb implementation in xtb 6.7.1 tries unrestricted wave function when `--uhf 0` is given (for open shell singlet?). This would cause bad efficiency when calculating standard closed shell system. Therefore, it is recommended not to give XTB_MULTI for ordinary closed shell systems. `export XTB_MULTI=none` also works.
 ```
 export XTB_CHARGE=0
-export XTB_MULTI=1
+export XTB_MULTI=1  # none for closed shell systems.
 export XTB_SOLVATION=ALPB
 export XTB_SOLVENT=CH2Cl2
 export XTB_PARAM=2  # 1/2/ff/gxtb
 export XTB_SCRATCH_DIR=/path/to/scratch/directory
 ```
+
+**Important change** (2026/05/31): When Hessian is called, grrm2xtb now automatically adds `--acc 0.1` to xtb commandline arguments (tight scc convergence). This is mainly for gxtb calculation (implemented in xtb 6.7.1), in which standard scc convergence tends to produce significant numerical errors in semi-analytic Hessian calculations.
 
 ## Parallelization
 
